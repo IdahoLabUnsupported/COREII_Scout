@@ -40,4 +40,7 @@ Shaw X Wen
 Robert P Manley
 
 
+BEA would like to give attribution to https://github.com/aiforsec/CyNER/tree/main which is provided under the MIT license.
+
+
 
