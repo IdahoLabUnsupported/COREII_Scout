@@ -1,0 +1,14 @@
+{
+  "Bleeping Computer": {
+    "rss": ["https://www.bleepingcomputer.com/feed/"]
+  },
+  "Krebs on Security": {
+    "rss": ["https://krebsonsecurity.com/feed/"]
+  },
+  "Threatpost": {
+    "rss": ["https://threatpost.com/feed/"]
+  },
+  "The Hacker News": {
+    "rss": ["https://feeds.feedburner.com/TheHackersNews"]
+  }
+}

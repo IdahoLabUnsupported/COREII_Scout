@@ -1,0 +1,24 @@
+# --- Environment & Secrets ---
+# This file should not be committed to version control.
+# Assumes .env is in the coreii_bertopic/ directory.
+.env
+
+# --- Python ---
+# Ignore Python cache files and compiled files.
+**/__pycache__/
+*.pyc
+
+# --- Data & Models ---
+# Ignore generated data and specific model directories from the topic modeling project.
+# The `best_bertopic_model` is intentionally NOT ignored.
+**/data/
+**/archive/
+**/models/evaluation_runs/
+**/models/bertopic_model/
+
+# --- IDE, OS, & Notebooks ---
+# Ignore common editor, OS, and notebook checkpoint files.
+**/.vscode/
+**/.idea/
+**/.DS_Store
+**/.ipynb_checkpoints/

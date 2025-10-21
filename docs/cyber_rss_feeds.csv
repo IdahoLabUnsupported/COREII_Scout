@@ -1,0 +1,24 @@
+title,url,rssUrl,description,tags
+ZDNet Security,https://www.zdnet.com/topic/security/,https://www.zdnet.com/topic/security/rss.xml,Security news and analysis from ZDNet.,news;security;IT
+SC Media,https://www.scmagazine.com/,https://www.scmagazine.com/rss.xml,"Cybersecurity news, analysis, and best practices for security professionals.",security;news;analysis
+Infosecurity Magazine,https://www.infosecurity-magazine.com/,https://www.infosecurity-magazine.com/rss/news/,Latest IT security news and industry insights.,security;IT;news
+Help Net Security,https://www.helpnetsecurity.com/,https://www.helpnetsecurity.com/feed/,Daily news and insight for information security professionals.,security;IT;news
+Cisco Talos Blog,https://blog.talosintelligence.com/,https://blog.talosintelligence.com/feeds/posts/default,Threat intelligence and research from Cisco Talos.,threatintel;malware;security
+Microsoft Security Blog,https://msrc-blog.microsoft.com/,https://msrc-blog.microsoft.com/feed/,Security updates and analysis from Microsoft.,security;vendor;patches
+Google Project Zero,https://googleprojectzero.blogspot.com/,https://googleprojectzero.blogspot.com/feeds/posts/default,Research on zero-day vulnerabilities from Google’s Project Zero team.,security;research;zeroday
+Palo Alto Unit 42,https://unit42.paloaltonetworks.com/,https://unit42.paloaltonetworks.com/feed/,Threat intelligence and security research from Palo Alto Networks.,threatintel;malware;security
+CrowdStrike Blog,https://www.crowdstrike.com/blog/,https://www.crowdstrike.com/blog/feed/,Cybersecurity news and threat research from CrowdStrike.,threatintel;APT;malware
+Mandiant/Google Cloud Security,https://cloud.google.com/blog/topics/threat-intelligence,https://cloud.google.com/blog/topics/threat-intelligence/rss/,Threat intelligence updates and research from Mandiant and Google Cloud.,threatintel;cloud;APT
+ESET WeLiveSecurity,https://www.welivesecurity.com/,https://www.welivesecurity.com/feed/,Security research and analysis from ESET.,malware;security;IT
+Malwarebytes Labs,https://blog.malwarebytes.com/,https://blog.malwarebytes.com/feed/,"Malware research, threat analysis, and news from Malwarebytes.",malware;research;security
+SANS Internet Storm Center,https://isc.sans.edu/,https://isc.sans.edu/rssfeed.xml,Daily incident handler diaries and threat intelligence from SANS ISC.,threatintel;incident;malware
+VX Underground,https://vx-underground.org/,https://vx-underground.substack.com/feed,"Malware, exploits, and research from the VX Underground collective.",malware;exploits;research
+CISA Alerts,https://www.cisa.gov/uscert/ncas/alerts,https://www.cisa.gov/uscert/ncas/alerts.xml,Cybersecurity alerts and advisories from CISA.,government;alerts;CISA
+CERT Vulnerability Notes,https://www.kb.cert.org/vuls/,https://www.kb.cert.org/vuls/rss/rss.xml,Vulnerability notes and analysis from CERT/CC.,vulnerabilities;CERT;security
+ENISA News,https://www.enisa.europa.eu/news,https://www.enisa.europa.eu/news/rss,News and advisories from the EU Agency for Cybersecurity (ENISA).,EU;security;policy
+CERT-EU,https://cert.europa.eu/,https://cert.europa.eu/cert/NewsRssFeed,CERT-EU news and threat analysis.,EU;CERT;security
+Full Disclosure,https://seclists.org/fulldisclosure/,https://seclists.org/rss/fulldisclosure.rss,Full Disclosure mailing list for vulnerabilities and exploits.,vulnerabilities;exploits;community
+Packet Storm Security,https://packetstormsecurity.com/,https://rss.packetstormsecurity.com/files/,"Latest tools, exploits, and advisories from Packet Storm.",exploits;tools;security
+Exploit-DB,https://www.exploit-db.com/,https://www.exploit-db.com/rss.xml,Public exploits and PoCs from Exploit Database.,exploits;PoC;vulnerabilities
+Red Canary Blog,https://redcanary.com/blog/,https://redcanary.com/feed/,Threat detection and hunting blog by Red Canary.,threathunting;malware;APT
+Trellix Security,https://www.trellix.com/en-us/about/newsroom.html,https://www.trellix.com/en-us/about/newsroom/rss.html,Threat intelligence and updates from Trellix (FireEye + McAfee).,threatintel;malware;security

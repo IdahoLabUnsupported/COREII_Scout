@@ -1,0 +1,438 @@
+// Copyright 2025, Battelle Energy Alliance, LLC. All Rights Reserved
+
+import React, { useState, useEffect, useMemo } from 'react';
+import CardContent from '../components/cards/CardContent';
+import CardStatusNested from '../components/cards/CardStatusNested';
+import FormElementSelect from '../components/forms/formElements/FormElementSelect';
+import FormElementCheckbox from '../components/forms/formElements/FormElementCheckbox';
+import ButtonBasic from '../components/elements/ButtonBasic';
+import { CardItem } from '../../app/types/types';
+
+import { DropResult } from '@hello-pangea/dnd';
+import CardList from '../components/cards/CardList';
+import { useGetSettingsQuery, useCreateOrUpdateSettingsMutation } from '../../app/services/client';
+
+const ViewSettingsRSS: React.FC = () => {
+
+  const [items, setItems] = useState<CardItem[]>([]);
+  const [saveSettings] = useCreateOrUpdateSettingsMutation();
+  const { data: settings, isLoading, isSuccess, isError, refetch } = useGetSettingsQuery('default_settings');
+  const [hasInitialized, setHasInitialized] = useState(false);
+  const [updateFrequency, setUpdateFrequency] = useState<number>();
+  const [sortBy, setSortBy] = useState<string>();
+  const [articlesPerFeed, setArticlesPerFeed] = useState<number>();
+  const [allowEmailNotifications, setAllowEmailNotifications] = useState<boolean>();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (!settings || isError) {
+        setItems(initialItems);
+      }
+      else if (settings.rss.rssFeeds) { //(!isLoading && !hasInitialized && isSuccess && settings) {
+        setItems(settings.rss.rssFeeds);
+      }
+      if (settings) {
+        setUpdateFrequency(settings.rss.updateFrequency);
+        setSortBy(settings.rss.sortBy);
+        setArticlesPerFeed(settings.rss.articlesPerFeed);
+        setAllowEmailNotifications(settings.rss.allowEmailNotifications);
+      }
+      setHasInitialized(true);
+    }
+  }, [isLoading, isSuccess, isError, settings, hasInitialized]);
+
+  useEffect(() => {
+    if (hasInitialized && items.length > 0)
+      saveSettings({
+        settingName: 'default_settings',
+        rss: {
+          rssFeeds: items
+        }
+      });
+  }, [items, saveSettings]);
+
+  useEffect(() => {
+    if (updateFrequency !== undefined) {
+      saveSettings({ ...settings, rss: { ...settings.rss, updateFrequency } });
+    }
+  }, [updateFrequency]);
+
+  useEffect(() => {
+    if (sortBy !== undefined) {
+      saveSettings({ ...settings, rss: { ...settings.rss, sortBy } });
+    }
+  }, [sortBy]);
+
+  useEffect(() => {
+    if (articlesPerFeed !== undefined) {
+      saveSettings({ ...settings, rss: { ...settings.rss, articlesPerFeed } });
+    }
+  }, [articlesPerFeed]);
+
+  useEffect(() => {
+    if (allowEmailNotifications !== undefined) {
+      saveSettings({ ...settings, rss: { ...settings.rss, allowEmailNotifications } });
+    }
+  }, [allowEmailNotifications]);
+
+  const handleEdit = (id: string) => {
+    console.log(`Edit item with id: ${id}`);
+  };
+
+  const handleHide = (id: string) => {
+    console.log(`Hide item with id: ${id}`);
+    setItems(items.map(item => item.id === id ? { ...item, hidden: true } : item));
+  };
+
+  const handleUnhide = (id: string) => {
+    console.log(`Unhide item with id: ${id}`);
+    setItems(items.map(item => item.id === id ? { ...item, hidden: false } : item));
+  };
+
+  const handleDelete = (id: string) => {
+    console.log(`Delete item with id: ${id}`);
+    setItems(items.filter((item) => item.id !== id));
+  };
+
+  const handleDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const reorderedItems = Array.from(items);
+    const [movedItem] = reorderedItems.splice(result.source.index, 1);
+    reorderedItems.splice(result.destination.index, 0, movedItem);
+
+    setItems(reorderedItems);
+  };
+
+  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target?.result;
+        if (typeof content === 'string') {
+          try {
+            const importedItems: CardItem[] = JSON.parse(content);
+            setItems(importedItems);
+          } catch (error) {
+            console.error('Failed to parse JSON', error);
+          }
+        }
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  const handleExport = () => {
+    const dataStr = JSON.stringify(items, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'rss_feeds.json'; // Filename for the downloaded file
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  const handleUpdateFrequencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setUpdateFrequency(Number(e.target.value));
+  };
+
+  const handleSortByChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(e.target.value);
+  };
+
+  const handleArticlesPerFeedChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setArticlesPerFeed(Number(e.target.value));
+  };
+
+  const handleAllowEmailNotificationsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAllowEmailNotifications(e.target.checked);
+  };
+
+  const handleSaveAllSettings = async () => {
+    try {
+      await saveSettings({
+        settingName: 'default_settings',
+        rss: {
+          rssFeeds: items,
+          updateFrequency,
+          sortBy,
+          articlesPerFeed,
+          allowEmailNotifications
+        }
+      }).unwrap(); // Use unwrap to handle promise rejection
+    } catch (error) {
+      console.error('Failed to save settings:', error);
+    }
+  };
+
+  return (
+    <>
+      <div className="p-6 flex-col w-full grid gap-4">
+        {/* Settings */}
+        <div className="flex flex-col w-full">
+          <div className="grid grid-cols-1">
+            <CardStatusNested title={'Default Feed Settings'} type="normal" className="flex">
+              <div className="mb-4 mr-4 flex absolute right-1 top-3">
+                <ButtonBasic
+                  label="Save"
+                  color={'btn-primary'}
+                  buttonSize="btn-sm"
+                  onClick={handleSaveAllSettings}
+                />
+              </div>
+              <CardContent customPadding='p-4' customClass={`min-h-[50px] mt-4`}>
+                <div className="flex justify-between mt-2">
+                  <div className="flex items-center space-x-4">
+                    <FormElementSelect
+                      label={'Update Frequency'}
+                      options={[{ label: "10 min", value: "10" }, { label: "30 min", value: "30" }, { label: "60 min", value: "60" }]}
+                      value={updateFrequency?.toString()}
+                      labelClassName={'w-80 text-right mr-2'}
+                      className={'w-[300px]'}
+                      onChange={handleUpdateFrequencyChange}
+                    />
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <FormElementSelect
+                      label={'Sort by'}
+                      options={[{ label: "Date", value: "date" }, { label: "Category", value: "category" }, { label: "Name", value: "name" }, { label: "Unread", value: "unread" }]}
+                      value={sortBy}
+                      labelClassName={'w-80 text-right mr-2'}
+                      className={'w-[300px]'}
+                      onChange={handleSortByChange}
+                    />
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <FormElementSelect
+                      label={'Articles per Feed'}
+                      options={[{ label: "10", value: "10" }, { label: "20", value: "20" }, { label: "30", value: "30" }, { label: "40", value: "40" }]}
+                      value={articlesPerFeed?.toString()}
+                      labelClassName={'w-80 text-right mr-2'}
+                      className={'w-[300px]'}
+                      onChange={handleArticlesPerFeedChange}
+                    />
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <FormElementCheckbox
+                      label={'Allow Email Notifications'}
+                      value="allowEmailNotifications"
+                      name="allowEmailNotifications"
+                      labelClassName={'w-80 text-left ml-2'}
+                      className={'w-[300px]'}
+                      checked={allowEmailNotifications}
+                      onChange={handleAllowEmailNotificationsChange}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </CardStatusNested>
+          </div>
+        </div>
+        {/* Feed List */}
+        <div className="flex flex-col w-full">
+          <div className="grid grid-cols-1">
+            <CardStatusNested title={'Manage Feeds'} type="normal" className="flex">
+              <div className="mb-4 flex space-x-2 mr-4 absolute right-1 top-3 ">
+                <input
+                  type="file"
+                  accept=".json"
+                  onChange={handleImport}
+                  className="hidden"
+                  id="import-file-input"
+                />
+                <label htmlFor="import-file-input">
+                  <ButtonBasic
+                    label="Import"
+                    title="Import RSS Feed"
+                    color={'btn-secondary'}
+                    buttonSize="btn-sm"
+                    onClick={() => document.getElementById('import-file-input')?.click()}
+                  />
+                </label>
+                <ButtonBasic
+                  label="Export"
+                  title="Export RSS Feed"
+                  color={'btn-secondary'}
+                  buttonSize="btn-sm"
+                  onClick={handleExport}
+                />
+                <ButtonBasic
+                  label="Save"
+                  color={'btn-primary'}
+                  buttonSize="btn-sm"
+                  onClick={handleSaveAllSettings}
+                />
+              </div>
+              <CardContent customPadding='p-0' customClass={`min-h-[50px]`}>
+                <CardList
+                  items={items}
+                  onEdit={handleEdit}
+                  onHide={handleHide}
+                  onUnhide={handleUnhide}
+                  onDelete={handleDelete}
+                  onDragEnd={handleDragEnd}
+                />
+              </CardContent>
+            </CardStatusNested>
+          </div>
+        </div>
+
+
+      </div>
+    </>
+  );
+};
+
+export default ViewSettingsRSS;
+
+const initialItems = [
+  {
+    id: '1',
+    title: 'The Hacker News',
+    hidden: false,
+
+    url: 'https://news.ycombinator.com/',
+    description: 'A social news website that focuses on computer science and entrepreneurship.',
+    tags: 'technology, news, startup'
+  },
+  {
+    id: '2',
+    title: 'Krebs on Security',
+    hidden: false,
+
+    url: 'https://krebsonsecurity.com/',
+    description: 'A blog by journalist Brian Krebs that covers cybersecurity and internet privacy.',
+    tags: 'security, blog, malware'
+  },
+  {
+    id: '3',
+    title: 'Hackread - Latest Cybesecurity, Hacking News, Tech, AI & Crypto',
+    hidden: false,
+
+    url: 'https://www.hackread.com/',
+    description: 'An online platform that offers cybersecurity news, hacking updates, and technology reviews.',
+    tags: 'cybersecurity, hacking, technology'
+  },
+  {
+    id: '4',
+    title: 'Threat Intelligence',
+    hidden: false,
+
+    url: 'https://www.threatintelligence.com/',
+    description: 'Information about threats that can inform decisions and actions to mitigate risks.',
+    tags: 'threats, intelligence, cybersecurity'
+  },
+  {
+    id: '5',
+    title: 'Schneier on Security',
+    hidden: false,
+
+    url: 'https://www.schneier.com/',
+    description: 'A blog by Bruce Schneier, a renowned security technologist and author.',
+    tags: 'security, blog, analysis'
+  },
+  {
+    id: '6',
+    title: 'Security Week',
+    hidden: false,
+
+    url: 'https://www.securityweek.com/',
+    description: 'A leading source for IT security news and analysis.',
+    tags: 'news, security, IT'
+  },
+  {
+    id: '7',
+    title: 'AWS Security Blog',
+    hidden: false,
+
+    url: 'https://aws.amazon.com/security/security-blog/',
+    description: 'AWS security best practices, announcements, and updates from the AWS Security team.',
+    tags: 'cloud, security, AWS'
+  },
+  {
+    id: '8',
+    title: 'Cisco Security Advisor',
+    hidden: false,
+
+    url: 'https://www.cisco.com/c/en/us/products/security/security-advisor.html',
+    description: 'Offers security insights and guidance from Cisco’s security experts.',
+    tags: 'network, security, Cisco'
+  },
+  {
+    id: '9',
+    title: 'Darkreading',
+    hidden: false,
+
+    url: 'https://www.darkreading.com/',
+    description: 'A comprehensive source for IT security professionals.',
+    tags: 'news, security, IT'
+  },
+  {
+    id: '10',
+    title: 'Google Online Security',
+    hidden: false,
+
+    url: 'https://security.googleblog.com/',
+    description: 'Updates about security from Google and its products.',
+    tags: 'security, Google, updates'
+  },
+  {
+    id: '11',
+    title: 'Naked Security',
+    hidden: false,
+
+    url: 'https://nakedsecurity.sophos.com/',
+    description: 'A blog that provides cybersecurity news, advice, and insights.',
+    tags: 'security, news, advice'
+  },
+  {
+    id: '12',
+    title: 'WeLiveSecurity',
+    hidden: false,
+
+    url: 'https://www.welivesecurity.com/',
+    description: 'The ESET blog that covers cybersecurity news and best practices.',
+    tags: 'security, news, ESET'
+  },
+  {
+    id: '13',
+    title: 'Graham Cluley',
+    hidden: false,
+
+    url: 'https://www.grahamcluley.com/',
+    description: 'A blog by security expert Graham Cluley that covers various security topics.',
+    tags: 'security, blog, expert'
+  },
+  {
+    id: '14',
+    title: 'CSO',
+    hidden: false,
+
+    url: 'https://www.csoonline.com/',
+    description: 'Provides news and insights on cybersecurity and risk management.',
+    tags: 'security, risk, management'
+  },
+  {
+    id: '15',
+    title: 'Threatpost',
+    hidden: false,
+
+    url: 'https://threatpost.com/',
+    description: 'An independent news site that covers IT and cybersecurity.',
+    tags: 'news, cybersecurity, IT'
+  },
+  {
+    id: '16',
+    title: 'Bleeping Computer',
+    hidden: false,
+
+    url: 'https://www.bleepingcomputer.com/',
+    description: 'A resource for technology solutions and cybersecurity news.',
+    tags: 'technology, news, solutions'
+  }
+];

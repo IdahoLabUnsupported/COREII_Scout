@@ -1,0 +1,44 @@
+# Core API
+fastapi==0.116.1
+uvicorn==0.35.0
+
+# BERTopic essentials - use standard PyTorch (will be much smaller than CUDA)
+bertopic==0.17.3
+sentence-transformers==3.3.1
+torch==2.5.1
+torchvision==0.20.1
+torchaudio==2.5.1
+
+# Scientific computing - lean versions
+numpy==1.26.4
+pandas==2.3.0
+scikit-learn==1.5.2
+umap-learn==0.5.6
+hdbscan==0.8.39
+
+# Text processing
+spacy==3.8.2
+
+# Database and data loading
+pymongo==4.10.1
+pyarrow==18.1.0
+
+# HTTP client - compatible versions to avoid proxies argument error
+httpx==0.27.2
+openai==1.55.3
+
+# Environment
+python-dotenv==1.0.1
+
+# Utilities - minimal set
+beautifulsoup4==4.12.3
+python-dateutil==2.9.0
+
+# Enhanced training dependencies
+dask[distributed]==2024.12.1
+gensim==4.3.3
+
+# Remove heavy packages:
+# - No tensorflow
+# - No matplotlib/wordcloud for production
+# - No CUDA packages

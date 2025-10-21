@@ -1,0 +1,242 @@
+[
+  {
+    "articleCount": 0,
+    "id": "1",
+    "title": "The Hacker News",
+    "hidden": false,
+    "url": "https://news.ycombinator.com/",
+    "description": "A social news website that focuses on computer science and entrepreneurship.",
+    "tags": [
+      "technology",
+      "news",
+      "startup"
+    ],
+    "_id": "68c32b98b95c9551da066f86",
+    "rssUrl": "https://hnrss.org/frontpage"
+  },
+  {
+    "articleCount": 0,
+    "id": "2",
+    "title": "Krebs on Security",
+    "hidden": false,
+    "url": "https://krebsonsecurity.com/",
+    "description": "A blog by journalist Brian Krebs that covers cybersecurity and internet privacy.",
+    "tags": [
+      "security",
+      "blog",
+      "malware"
+    ],
+    "_id": "68c32b98b95c9551da066f87",
+    "rssUrl": "https://krebsonsecurity.com/feed/"
+  },
+  {
+    "articleCount": 0,
+    "id": "3",
+    "title": "Hackread - Latest Cybesecurity, Hacking News, Tech, AI & Crypto",
+    "hidden": false,
+    "url": "https://www.hackread.com/",
+    "description": "An online platform that offers cybersecurity news, hacking updates, and technology reviews.",
+    "tags": [
+      "cybersecurity",
+      "hacking",
+      "technology"
+    ],
+    "_id": "68c32b98b95c9551da066f88",
+    "rssUrl": "https://www.hackread.com/feed"
+  },
+  {
+    "articleCount": 0,
+    "id": "7",
+    "title": "AWS Security Blog",
+    "hidden": false,
+    "url": "https://aws.amazon.com/security/security-blog/",
+    "description": "AWS security best practices, announcements, and updates from the AWS Security team.",
+    "tags": [
+      "cloud",
+      "security",
+      "AWS"
+    ],
+    "_id": "68c32b98b95c9551da066f8c",
+    "rssUrl": "https://aws.amazon.com/blogs/security/feed/"
+  },
+  {
+    "articleCount": 0,
+    "id": "4",
+    "title": "Threat Intelligence",
+    "hidden": false,
+    "url": "https://www.threatintelligence.com/",
+    "description": "Information about threats that can inform decisions and actions to mitigate risks.",
+    "tags": [
+      "threats",
+      "intelligence",
+      "cybersecurity"
+    ],
+    "_id": "68c32b98b95c9551da066f89",
+    "rssUrl": "https://www.threatintelligence.com/feed"
+  },
+  {
+    "articleCount": 0,
+    "id": "5",
+    "title": "Schneier on Security",
+    "hidden": false,
+    "url": "https://www.schneier.com/",
+    "description": "A blog by Bruce Schneier, a renowned security technologist and author.",
+    "tags": [
+      "security",
+      "blog",
+      "analysis"
+    ],
+    "_id": "68c32b98b95c9551da066f8a",
+    "rssUrl": "https://www.schneier.com/blog/atom.xml"
+  },
+  {
+    "articleCount": 0,
+    "id": "6",
+    "title": "Security Week",
+    "hidden": false,
+    "url": "https://www.securityweek.com/",
+    "description": "A leading source for IT security news and analysis.",
+    "tags": [
+      "news",
+      "security",
+      "IT"
+    ],
+    "_id": "68c32b98b95c9551da066f8b",
+    "rssUrl": "https://www.securityweek.com/feed"
+  },
+  {
+    "articleCount": 0,
+    "id": "8",
+    "title": "Cisco Security Advisor",
+    "hidden": false,
+    "url": "https://www.cisco.com/c/en/us/products/security/security-advisor.html",
+    "description": "Offers security insights and guidance from Cisco’s security experts.",
+    "tags": [
+      "network",
+      "security",
+      "Cisco"
+    ],
+    "_id": "68c32b98b95c9551da066f8d",
+    "rssUrl": "https://blogs.cisco.com/security/feed"
+  },
+  {
+    "articleCount": 0,
+    "id": "9",
+    "title": "Darkreading",
+    "hidden": false,
+    "url": "https://www.darkreading.com/",
+    "description": "A comprehensive source for IT security professionals.",
+    "tags": [
+      "news",
+      "security",
+      "IT"
+    ],
+    "_id": "68c32b98b95c9551da066f8e",
+    "rssUrl": "https://www.darkreading.com/rss.xml"
+  },
+  {
+    "articleCount": 0,
+    "id": "10",
+    "title": "Google Online Security",
+    "hidden": false,
+    "url": "https://security.googleblog.com/",
+    "description": "Updates about security from Google and its products.",
+    "tags": [
+      "security",
+      "Google",
+      "updates"
+    ],
+    "_id": "68c32b98b95c9551da066f8f",
+    "rssUrl": "https://security.googleblog.com/feeds/posts/default"
+  },
+  {
+    "articleCount": 0,
+    "id": "11",
+    "title": "Naked Security",
+    "hidden": false,
+    "url": "https://nakedsecurity.sophos.com/",
+    "description": "A blog that provides cybersecurity news, advice, and insights.",
+    "tags": [
+      "security",
+      "news",
+      "advice"
+    ],
+    "_id": "68c32b98b95c9551da066f90",
+    "rssUrl": "https://nakedsecurity.sophos.com/feed/"
+  },
+  {
+    "articleCount": 0,
+    "id": "12",
+    "title": "WeLiveSecurity",
+    "hidden": false,
+    "url": "https://www.welivesecurity.com/",
+    "description": "The ESET blog that covers cybersecurity news and best practices.",
+    "tags": [
+      "security",
+      "news",
+      "ESET"
+    ],
+    "_id": "68c32b98b95c9551da066f91",
+    "rssUrl": "https://www.welivesecurity.com/feed/"
+  },
+  {
+    "articleCount": 0,
+    "id": "13",
+    "title": "Graham Cluley",
+    "hidden": false,
+    "url": "https://www.grahamcluley.com/",
+    "description": "A blog by security expert Graham Cluley that covers various security topics.",
+    "tags": [
+      "security",
+      "blog",
+      "expert"
+    ],
+    "_id": "68c32b98b95c9551da066f92",
+    "rssUrl": "https://www.grahamcluley.com/feed/"
+  },
+  {
+    "articleCount": 0,
+    "id": "14",
+    "title": "CSO",
+    "hidden": false,
+    "url": "https://www.csoonline.com/",
+    "description": "Provides news and insights on cybersecurity and risk management.",
+    "tags": [
+      "security",
+      "risk",
+      "management"
+    ],
+    "_id": "68c32b98b95c9551da066f93",
+    "rssUrl": "https://www.csoonline.com/index.rss"
+  },
+  {
+    "articleCount": 0,
+    "id": "15",
+    "title": "Threatpost",
+    "hidden": false,
+    "url": "https://threatpost.com/",
+    "description": "An independent news site that covers IT and cybersecurity.",
+    "tags": [
+      "news",
+      "cybersecurity",
+      "IT"
+    ],
+    "_id": "68c32b98b95c9551da066f94",
+    "rssUrl": "https://threatpost.com/feed"
+  },
+  {
+    "articleCount": 0,
+    "id": "16",
+    "title": "Bleeping Computer",
+    "hidden": false,
+    "url": "https://www.bleepingcomputer.com/",
+    "description": "A resource for technology solutions and cybersecurity news.",
+    "tags": [
+      "technology",
+      "news",
+      "solutions"
+    ],
+    "_id": "68c32b98b95c9551da066f95",
+    "rssUrl": "https://www.bleepingcomputer.com/feed/"
+  }
+]

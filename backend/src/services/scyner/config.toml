@@ -1,0 +1,18 @@
+[app]
+app_name = "scyner"
+description = "Threat analysis."
+
+origins = [
+    "http://localhost:8001",
+    "http://127.0.0.1:8001",
+]
+
+microservice_version = "v1"
+
+[app.ssl]
+ssl_env_var = ""
+ssl_keyfile = ""
+ssl_certfile = ""
+
+[app.security]
+api_key_file = "api_keys.json"

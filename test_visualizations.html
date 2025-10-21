@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BERTopic Visualization Test</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { border-color: green; background-color: #f0fff0; }
+        .error { border-color: red; background-color: #fff0f0; }
+        .loading { border-color: orange; background-color: #fff8dc; }
+        .visualization-container { margin: 20px 0; height: 400px; }
+        button { margin: 5px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>BERTopic Visualization Test</h1>
+    <p>This tool tests all BERTopic visualization endpoints directly.</p>
+    
+    <button onclick="testAllEndpoints()">Test All Visualizations</button>
+    <button onclick="testSpecificEndpoint('barchart')">Test Barchart</button>
+    <button onclick="testSpecificEndpoint('hierarchy')">Test Hierarchy</button>
+    <button onclick="testSpecificEndpoint('heatmap')">Test Heatmap</button>
+    <button onclick="testSpecificEndpoint('topics-over-time')">Test Topics Over Time</button>
+    <button onclick="testSpecificEndpoint('intertopic-distance')">Test Intertopic Distance</button>
+    
+    <div id="results"></div>
+    <div id="current-viz" class="visualization-container"></div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8003';
+        
+        const endpoints = {
+            'barchart': '/model/visualize-barchart?top_n_topics=5',
+            'hierarchy': '/model/visualize-hierarchy?top_n_topics=5', 
+            'heatmap': '/model/visualize-heatmap?top_n_topics=5',
+            'topics-over-time': '/model/visualize-topics-over-time?top_n_topics=5',
+            'intertopic-distance': '/model/visualize-intertopic-distance?top_n_topics=5'
+        };
+
+        function addResult(name, status, message, data = null) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${status}`;
+            
+            let content = `<h3>${name}</h3><p>${message}</p>`;
+            if (data && status === 'success') {
+                content += `<p><strong>Data structure:</strong> ${JSON.stringify({
+                    traces: data.data ? data.data.length : 'N/A',
+                    hasLayout: !!data.layout,
+                    layoutKeys: data.layout ? Object.keys(data.layout).slice(0, 5) : 'N/A'
+                }, null, 2)}</p>`;
+                content += `<button onclick="renderVisualization('${name}', ${JSON.stringify(data).replace(/"/g, '&quot;')})">Render This Visualization</button>`;
+            }
+            
+            div.innerHTML = content;
+            results.appendChild(div);
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('current-viz').innerHTML = '';
+        }
+
+        async function testSpecificEndpoint(name) {
+            clearResults();
+            addResult(name, 'loading', 'Testing endpoint...');
+            
+            try {
+                const response = await fetch(`${BASE_URL}${endpoints[name]}`);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    addResult(name, 'error', `HTTP ${response.status}: ${errorText}`);
+                    return;
+                }
+                
+                const data = await response.json();
+                
+                if (data.data && Array.isArray(data.data) && data.layout) {
+                    addResult(name, 'success', 'Endpoint returned valid Plotly data!', data);
+                } else {
+                    addResult(name, 'error', `Invalid data format: ${JSON.stringify(Object.keys(data))}`);
+                }
+                
+            } catch (error) {
+                addResult(name, 'error', `Network error: ${error.message}`);
+            }
+        }
+
+        async function testAllEndpoints() {
+            clearResults();
+            
+            for (const [name, endpoint] of Object.entries(endpoints)) {
+                await testSpecificEndpoint(name);
+                // Small delay between requests
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        }
+
+        function renderVisualization(name, data) {
+            const container = document.getElementById('current-viz');
+            container.innerHTML = `<h2>Current Visualization: ${name}</h2>`;
+            
+            try {
+                Plotly.newPlot('current-viz', data.data, data.layout, {responsive: true});
+            } catch (error) {
+                container.innerHTML += `<p class="error">Error rendering: ${error.message}</p>`;
+            }
+        }
+
+        // Test current model on load
+        window.onload = async function() {
+            try {
+                const response = await fetch(`${BASE_URL}/model/current-model`);
+                const modelInfo = await response.json();
+                addResult('Current Model', modelInfo.loaded ? 'success' : 'error', 
+                    modelInfo.loaded ? `Model loaded: ${modelInfo.current_model}` : 'No model loaded');
+            } catch (error) {
+                addResult('Current Model', 'error', `Cannot connect to BERTopic service: ${error.message}`);
+            }
+        };
+    </script>
+</body>
+</html>

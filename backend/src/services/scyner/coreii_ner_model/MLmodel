@@ -1,0 +1,28 @@
+artifact_path: cyner-2.0-deberta-v3-base
+flavors:
+  python_function:
+    artifacts:
+      transformers_ner:
+        path: artifacts/CyNER-2.0-DeBERTa-v3-base
+        uri: /data/models/CyNER-2.0-DeBERTa-v3-base
+    cloudpickle_version: 3.1.1
+    code: null
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.pyfunc.model
+    python_model: python_model.pkl
+    python_version: 3.12.9
+    streamable: false
+is_signature_from_type_hint: true
+mlflow_version: 2.22.0
+model_size_bytes: 1487588196
+model_uuid: 155fa108bd964cf091087d418818d4a3
+prompts: null
+run_id: 1055ba682be742649d6bfc21d5d5226d
+signature:
+  inputs: '[{"type": "string", "required": true}]'
+  outputs: '[{"type": "map", "values": {"type": "any"}, "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-05-05 20:29:09.812654'

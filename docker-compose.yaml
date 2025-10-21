@@ -1,0 +1,137 @@
+# © 2025 Idaho National Laboratory. All rights reserved.
+
+networks:
+  scout_network:
+    driver: bridge
+
+services:
+  db:
+    image: mongo:8
+    #restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: scout
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_ROOT_DATABASE: scout
+    ports:
+      - 27017:27017
+    networks:
+      - scout_network
+    volumes:
+      - scoutdb-data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: scout
+      ME_CONFIG_BASICAUTH_PASSWORD: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: scout
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_URL: mongodb://scout:admin@db:27017/
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - scout_network
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      NODE_ENV: production
+      STIX_SERVICE_URL: http://stix-microservice:8000/stixconversion
+      LOCAL_NER_SERVICE_URL: http://scyner:8001/ner
+      LOCAL_LLM_SERVICE_URL: http://local-llm:8002/summarizer
+    env_file:
+      - "./backend/.env.production"
+    ports:
+      - 3001:3001
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - scout_network
+    volumes:
+      - rss-data:/usr/src/app/data
+      - ./backend/sources.json:/usr/src/app/data/sources.json
+   
+  frontend:
+    build:
+      context: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 5173:80
+    restart: always
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - scout_network
+
+  stix-microservice:
+    build:
+      context: ./backend/src/services/stix
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - backend
+    networks:
+      - scout_network
+ 
+  scyner:
+    build:
+      context: ./backend/src/services/scyner
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8001
+    depends_on:
+      - backend
+    networks:
+      - scout_network
+
+  bertopic:
+    build:
+      context: ./backend/src/services/bertopic
+      dockerfile: Dockerfile
+    environment:
+      LOCAL_LLM_SERVICE_URL: http://local-llm:8002
+    volumes:
+      - ./backend/.env.production:/app/.env
+      - rss-data:/app/data
+      - ./backend/src/services/bertopic/sources.json:/app/data/sources.json
+    #env_file:
+    #  - ./backend/.env.production
+    ports:
+      - 8003:8003
+    depends_on:
+      - backend
+      - local-llm
+    networks:
+      - scout_network
+ 
+  local-llm:
+    build:
+      context: ./backend/src/services/localLLM
+      dockerfile: Dockerfile
+    ports:
+      - 8002:8002
+    depends_on:
+      - backend
+    networks:
+      - scout_network
+
+volumes:
+  scoutdb-data:
+    driver: local
+  rss-data:
+    driver: local

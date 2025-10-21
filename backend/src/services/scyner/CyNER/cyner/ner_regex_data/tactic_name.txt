@@ -1,0 +1,1 @@
+Collection|Command and Control|Discovery|Evasion|Execution|Impact|Impair Process Control|Inhibit Response Function|Initial Access|Lateral Movement|Persistence|Privilege Escalation

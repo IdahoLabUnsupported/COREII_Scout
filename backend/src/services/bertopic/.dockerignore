@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+.scout_bertopic/
+bin/
+lib/
+include/
+share/
+pyvenv.cfg
+*.ipynb_checkpoints
+*.log
+
