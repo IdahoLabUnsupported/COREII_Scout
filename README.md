@@ -4,7 +4,7 @@ Scout Application for Intelligent Preprocessing of Reports and conversion to Att
 
 **Scout** is a tool designed to streamline cybersecurity analysts' workflows by automating the collection, summarization, correlation, and reporting of cybersecurity events. Using advanced AI/ML and standardized formats like [MITRE ATT&CK](https://attack.mitre.org/) and [STIX](https://oasis-open.github.io/cti-documentation/stix/intro.html), Scout processes open-source threat reports, can store data in [DeepLynx](https://github.com/idaholab/Deep-Lynx) as JSON, and generate human-readable reports.
 
-![Login image](public/login.png)
+![Login image](public/Login.PNG)
 ## Table of Contents
 - [Overview](#overview)
 - [Minimum Viable Product (MVP)](#minimum-viable-product-mvp)
